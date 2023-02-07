@@ -1,0 +1,40 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+
+   <h1 class="header">{{ category }}</h1>
+    <div class="container" style="margin-top: 3%;">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-image">
+            <thead>
+                <tr>
+                <th scope="col">User</th>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Link</th>
+                </tr>
+            </thead>
+    {% for listing in listings %}
+        <tbody>
+        <tr>
+            <th scope="row">{{ listing.user }}</th>
+            <td class="w-25">
+                <img src="{{ listing.url }}" class="img-fluid img-thumbnail" alt="listing.title">
+            </td>
+            <td style="vertical-align: middle;">{{ listing.title }}</td>
+            <td style="vertical-align: middle;">{{ listing.description }}</td>
+            <td style="vertical-align: middle;">${{ listing.starting_bid }}</td>
+            <td style="vertical-align: middle;"><a class="btn btn-outline-primary" href="{% url 'listing' listing.id %}" role="button">Details</a></td>
+        </tr>
+        </tbody>
+    {% endfor %}
+            </table>   
+        </div>
+        </div>
+    </div>
+
+
+{% endblock %}

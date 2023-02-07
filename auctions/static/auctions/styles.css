@@ -1,0 +1,83 @@
+
+
+body {
+    padding: 20px;
+}
+
+.listing-container {
+    display: flex;
+
+    flex-direction: row;
+
+}
+
+
+ .main {
+    margin-right: 25px;
+}
+
+.details {
+    margin-top: 10px;
+
+}
+
+ .comment {
+    
+    margin-left: 5%;
+    margin-right: 20px;
+    margin-top: 5px;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 5px;
+    padding: 10px;
+    color: rgb(32, 31, 31);
+    border: 1px solid rgba(0,0,0,.025);
+    height: 410px;
+    background-color: whitesmoke;
+    overflow: scroll;
+    overflow-wrap: break-word;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+
+#time-text {
+    color: rgba(67, 65, 65, 0.9);
+}
+
+
+
+.indi-comment {
+
+    word-wrap: break-word;
+    border-radius: 5px;
+    margin: 10px 0px;
+    padding: 5px;
+}
+
+.rounded {
+    height: 400px;
+    width: 400px;
+    border: 1px solid rgba(0,0,0,.125);
+
+}
+
+.header {
+    text-align: center;
+}
+
+form .btn {
+    margin: 5px 0;
+}
+
+#id_comment {
+    width: 400px;
+    margin-right: 10px;
+}
+
+.width-twof {
+    width: 250px;
+}
+
+.flex-form {
+    display: flex;
+    align-items: center;
+}

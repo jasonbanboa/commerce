@@ -1,0 +1,75 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+  
+
+    {% if won %}
+      {% for w in won %}
+        <div class="alert alert-info">Congratulation You have won : <strong> <em> {{ w.title }} </em> </strong> </div>
+      {% endfor %}
+    {% endif %}
+
+    <h2 class="header">Active Listings</h2>
+
+    {% if valid %}
+      <div class="container" style="margin-top: 3%;">
+        <div class="row">
+          <div class="col-12">
+              <table class="table table-image">
+                <thead>
+                  <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Starting Price</th>
+                    <th scope="col">Current Price</th>
+                    <th scope="col">Link</th>
+                  </tr>
+                </thead>
+
+        {% for listing in listings %}
+        
+            <tbody>
+              <tr>
+                <th scope="row">{{ listing.user }}</th>
+                <td class="w-25">
+                    <img src="{{ listing.url }}" class="img-fluid img-thumbnail" alt="{{ listing.title }} (No image)">
+                </td>
+                <td style="vertical-align: middle;">{{ listing.title }}</td>
+                <td style="vertical-align: middle;">{{ listing.description }}</td>
+                <td style="vertical-align: middle;">${{ listing.starting_bid|floatformat:2 }}</td>
+                {% if listing.highest == None %}
+                  <td style="vertical-align: middle;">No current bids</td>
+                {% else %}
+                  <td style="vertical-align: middle;">${{ listing.highest.bid|floatformat:2 }}</td>
+                {% endif %}
+                
+                
+
+                <td style="vertical-align: middle;"><a class="btn btn-outline-primary" href="{% url 'listing' listing.id %}" role="button">Details</a></td>
+              </tr>
+            </tbody>
+
+        {% empty %}
+          <div class="alert alert-info" role="alert">
+            No Active Listings
+          </div>
+        {% endfor %}
+
+              </table>   
+            </div>
+          </div>
+        </div>
+
+    {% else %}
+      <div class="alert alert-danger" role="alert">
+        Login required to see Active Listings
+      </div>
+    {% endif%}
+
+
+    
+{% endblock %}
+
+

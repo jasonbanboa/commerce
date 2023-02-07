@@ -1,0 +1,124 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+     <style>
+      .main-listing {
+
+            display: flex; font-family: 'Roboto', sans-serif;
+            border-radius: 5px;
+            padding: 10px;
+            color: rgb(32, 31, 31);
+            border: 1px solid rgba(0,0,0,.025);
+            background-color: whitesmoke;
+            overflow-wrap: break-word;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            
+      }
+    </style>
+
+    {% if won %}
+      {% for w in won %}
+        <h3><div class="alert alert-success" style="text-align: center;">Congratulation You have won : <strong> <em> {{ w.title }} </em> </strong> </div></h3>
+      {% endfor %}
+    {% endif %}
+    <h1>{{ listing.title }}</h1>
+    <p>Listed by: <b>{{ listing.user }}</b></p>
+    {% if not status %} <div style="width: 400px;" class="alert alert-danger">This listing has been closed</div>{% endif %}
+    <div class="listing-container">
+      <div class="main-listing">
+        <div class="main">
+            <img class="rounded" src="{{ listing.url}}" alt="{{ listing.title }} (No image)">
+        </div>
+
+        <div class="details">
+            <p class="data"><strong>Description:</strong> <em>{{ listing.description }}</em></p>
+            <hr>
+            <p class="data"><strong>Starting Bid:</strong> ${{ listing.starting_bid|floatformat:2 }}</p>
+            <hr>
+            <p class="data">
+                <strong>Current Bid:</strong>
+                {% if highest_bid %}
+                    ${{ highest_bid.bid|floatformat:2 }} (User: <strong>{{ highest_bid.user}}</strong>)
+                {% else %}
+                    <em>No current bids</em>
+                {% endif %}
+            </p>
+            <hr>
+            <p class="data"><strong>category:</strong>
+                {% if listing.category %}
+                    <em>{{ listing.category }}</em>
+                {% else %}
+                    <em>(No Category)</em>
+                {% endif %}
+            </p>
+            <hr>
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger width-twof" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if status %}
+                <form action="{% url 'bid' listing.id %}" method="post" class="flex-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input autofocus style="width: 250px;" class="form-control" type="number" name="bid" placeholder="Place your bid" step="0.01">
+                    </div>
+                    <input class="btn btn-outline-primary" style="display: inline; margin-left: 10px; margin-bottom: 22px" type="submit" value="Bid">
+                </form>
+            {% endif %}
+
+            {% if watching %}
+                <form action="{% url 'remove_watchlist' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ listing.id }}" required>
+                    <input class="btn btn-danger" type="submit" value="Unwatch">
+                </form>
+
+            {% else %}
+                <form action="{% url 'watchlist' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ listing.id }}">
+                    <input class="btn btn-primary" type="submit" value="Watch">
+                </form>
+            {% endif %}
+
+            {% if owner and status %}
+                <form action="{% url 'close_listing' listing.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-danger" value="Close Listing">
+                </form>
+            {% endif %}
+        </div>
+      </div>
+
+        <div class="comment">
+            <h3>Comments <i class="fa-solid fa-comments"></i></h3>
+            <form action="{% url 'comment' listing.id %}" method="POST" class="flex-form">
+                {% csrf_token %}
+                {{ form }}
+                <input class="btn btn-info" type="submit" value="Comment">
+            </form>
+
+                {% for comment in comments %}
+
+                    <hr>
+                    <div class="indi-comment">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span id="time-text">{{ comment.time }}</span> <br>
+                        <i class="fa-solid fa-user"></i>
+                        <strong>({{ comment.user.username }})</strong> :  {{ comment.comment }}
+                    </div>
+
+                {% empty %}
+                    <div class="indi-comment">
+                        No comments
+                    </div>
+                {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}
+
